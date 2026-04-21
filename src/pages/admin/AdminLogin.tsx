@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const loc = useLocation();
   const from = (loc.state as { from?: string })?.from || "/admin";
 
-  const [email, setEmail] = useState("admin@primeboats.nl");
+  const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -24,8 +24,9 @@ const AdminLogin = () => {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBusy(true); setError("");
-    const res = await login(email, password);
+    setBusy(true);
+    setError("");
+    const res = await login(username, password);
     setBusy(false);
     if (res.ok) nav(from, { replace: true });
     else setError(res.error || "Login failed");
@@ -38,18 +39,15 @@ const AdminLogin = () => {
           <Anchor className="h-5 w-5 text-accent" /> PrimeBoats
         </Link>
         <h1 className="mt-6 text-center font-display text-2xl font-bold text-primary">Admin sign in</h1>
-        <p className="mt-1 text-center text-sm text-muted-foreground">
-          Demo credentials: <code className="rounded bg-muted px-1 text-xs">admin@primeboats.nl</code> / <code className="rounded bg-muted px-1 text-xs">primeboats</code>
-        </p>
 
         <form onSubmit={submit} className="mt-6 space-y-4">
           <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Label htmlFor="username">Username</Label>
+            <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button type="submit" disabled={busy} className="w-full bg-primary hover:bg-primary/90">

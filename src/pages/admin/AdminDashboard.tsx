@@ -1,19 +1,22 @@
 import { Link } from "react-router-dom";
-import { BOATS } from "@/data/boats";
-import { MOCK_INQUIRIES } from "@/data/inquiries";
+import { useQuery } from "@tanstack/react-query";
+import { adminFetchBoats, adminFetchInquiries } from "@/lib/api";
+import { formatDate } from "@/data/inquiries";
 import { Sailboat, Inbox, CheckCircle2, Clock } from "lucide-react";
 
 const AdminDashboard = () => {
-  const total = BOATS.length;
-  const available = BOATS.filter((b) => b.status === "available").length;
-  const newInq = MOCK_INQUIRIES.filter((i) => i.status === "new").length;
-  const recentInq = [...MOCK_INQUIRIES].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 4);
+  const { data: boats = [] } = useQuery({ queryKey: ["admin", "boats"], queryFn: () => adminFetchBoats() });
+  const { data: inquiries = [] } = useQuery({ queryKey: ["admin", "inquiries"], queryFn: () => adminFetchInquiries() });
+
+  const available  = boats.filter((b) => b.status === "available").length;
+  const newInq     = inquiries.filter((i) => i.status === "new").length;
+  const recentInq  = [...inquiries].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 4);
 
   const stats = [
-    { label: "Total boats", value: total, icon: Sailboat, link: "/admin/boats" },
-    { label: "Available", value: available, icon: CheckCircle2, link: "/admin/boats" },
-    { label: "New inquiries", value: newInq, icon: Inbox, link: "/admin/inquiries" },
-    { label: "This week", value: MOCK_INQUIRIES.length, icon: Clock, link: "/admin/inquiries" },
+    { label: "Total boats",   value: boats.length, icon: Sailboat,    link: "/admin/boats" },
+    { label: "Available",     value: available,    icon: CheckCircle2, link: "/admin/boats" },
+    { label: "New inquiries", value: newInq,        icon: Inbox,       link: "/admin/inquiries" },
+    { label: "Total inquiries", value: inquiries.length, icon: Clock,  link: "/admin/inquiries" },
   ];
 
   return (
@@ -43,13 +46,16 @@ const AdminDashboard = () => {
             <li key={i.id} className="flex flex-wrap items-center justify-between gap-2 py-3 text-sm">
               <div>
                 <p className="font-semibold text-primary">{i.name}</p>
-                <p className="text-xs text-muted-foreground">{i.boatName || "General inquiry"}</p>
+                <p className="text-xs text-muted-foreground">{i.boatName || "General inquiry"} · {formatDate(i.createdAt)}</p>
               </div>
               <span className={`rounded-full px-2 py-0.5 text-xs ${i.status === "new" ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"}`}>
                 {i.status}
               </span>
             </li>
           ))}
+          {recentInq.length === 0 && (
+            <li className="py-6 text-center text-sm text-muted-foreground">No inquiries yet.</li>
+          )}
         </ul>
       </div>
     </div>

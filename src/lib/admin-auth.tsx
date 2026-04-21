@@ -1,45 +1,49 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-
-const KEY = "primeboats_admin_session";
+import { adminLogin, adminLogout, adminMe } from "@/lib/api";
 
 interface AuthCtx {
   isAuthed: boolean;
-  email: string | null;
-  login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  username: string | null;
+  login: (username: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   logout: () => void;
 }
 
 const Ctx = createContext<AuthCtx | null>(null);
 
-/**
- * MOCK admin auth (frontend-only). Wire to a real backend later.
- * Demo credentials: admin@primeboats.nl / primeboats
- */
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmail] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    const v = sessionStorage.getItem(KEY);
-    if (v) setEmail(v);
+    adminMe()
+      .then((d) => setUsername(d.username))
+      .catch(() => setUsername(null))
+      .finally(() => setChecked(true));
   }, []);
 
-  const login = async (e: string, p: string) => {
-    await new Promise((r) => setTimeout(r, 400));
-    if (e.toLowerCase() === "admin@primeboats.nl" && p === "primeboats") {
-      sessionStorage.setItem(KEY, e);
-      setEmail(e);
+  const login = async (u: string, p: string) => {
+    try {
+      const d = await adminLogin(u, p);
+      setUsername(d.username);
       return { ok: true };
+    } catch (e) {
+      return { ok: false, error: e instanceof Error ? e.message : "Login failed" };
     }
-    return { ok: false, error: "Invalid email or password" };
   };
 
-  const logout = () => {
-    sessionStorage.removeItem(KEY);
-    setEmail(null);
+  const logout = async () => {
+    await adminLogout().catch(() => {});
+    setUsername(null);
   };
 
-  return <Ctx.Provider value={{ isAuthed: !!email, email, login, logout }}>{children}</Ctx.Provider>;
+  if (!checked) return null;
+
+  return (
+    <Ctx.Provider value={{ isAuthed: !!username, username, login, logout }}>
+      {children}
+    </Ctx.Provider>
+  );
 };
 
 export const useAdminAuth = () => {

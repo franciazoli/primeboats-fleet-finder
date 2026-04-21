@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { submitInquiry } from "@/lib/api";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Name is required").max(80),
@@ -46,15 +47,26 @@ export const InquiryForm = ({ boat, onSubmitted }: Props) => {
     }
     setErrors({});
     setSubmitting(true);
-    // Mock submission — replace with real backend later
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitting(false);
-    toast({
-      title: "Inquiry sent",
-      description: "Thanks! We'll get back to you within one business day.",
-    });
-    setData({ name: "", email: "", phone: "", message: "" });
-    onSubmitted?.();
+    try {
+      await submitInquiry({
+        ...parsed.data,
+        boatId: boat?.id,
+      });
+      toast({
+        title: "Inquiry sent",
+        description: "Thanks! We'll get back to you within one business day.",
+      });
+      setData({ name: "", email: "", phone: "", message: "" });
+      onSubmitted?.();
+    } catch (err) {
+      toast({
+        title: "Something went wrong",
+        description: err instanceof Error ? err.message : "Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const update = (k: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>

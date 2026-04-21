@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Anchor, Shield, HeartHandshake, Sailboat } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { BoatCard } from "@/components/boats/BoatCard";
-import { BOATS } from "@/data/boats";
+import { fetchBoats } from "@/lib/api";
 import hero from "@/assets/hero-boat.jpg";
 
 const Index = () => {
-  const featured = BOATS.filter((b) => b.featured).slice(0, 3);
+  const { data: featured = [] } = useQuery({
+    queryKey: ["boats", "featured"],
+    queryFn: () => fetchBoats({ featured: "1" }),
+  });
 
   return (
     <>
@@ -39,20 +43,22 @@ const Index = () => {
       </section>
 
       {/* Featured */}
-      <section className="container py-20">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-widest text-accent">Featured</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-primary md:text-4xl">This week's highlights</h2>
+      {featured.length > 0 && (
+        <section className="container py-20">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-widest text-accent">Featured</p>
+              <h2 className="mt-2 font-display text-3xl font-bold text-primary md:text-4xl">This week's highlights</h2>
+            </div>
+            <Link to="/boats" className="text-sm font-medium text-primary hover:text-accent">
+              See all boats →
+            </Link>
           </div>
-          <Link to="/boats" className="text-sm font-medium text-primary hover:text-accent">
-            See all boats →
-          </Link>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((boat) => <BoatCard key={boat.id} boat={boat} />)}
-        </div>
-      </section>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featured.slice(0, 3).map((boat) => <BoatCard key={boat.id} boat={boat} />)}
+          </div>
+        </section>
+      )}
 
       {/* Why us */}
       <section className="bg-secondary/40 py-20">

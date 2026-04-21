@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
-import { BOATS, BOAT_TYPES, BoatCondition, BoatType } from "@/data/boats";
+import { useQuery } from "@tanstack/react-query";
+import { BOAT_TYPES, BoatCondition, BoatType } from "@/data/boats";
 import { BoatCard } from "@/components/boats/BoatCard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { fetchBoats } from "@/lib/api";
 
 type Sort = "newest" | "price-asc" | "price-desc";
 
@@ -16,8 +18,13 @@ const Boats = () => {
   const [sort, setSort] = useState<Sort>("newest");
   const [showFilters, setShowFilters] = useState(false);
 
+  const { data: allBoats = [], isLoading } = useQuery({
+    queryKey: ["boats"],
+    queryFn: () => fetchBoats(),
+  });
+
   const filtered = useMemo(() => {
-    let list = [...BOATS];
+    let list = [...allBoats];
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter((b) => b.name.toLowerCase().includes(q) || b.type.toLowerCase().includes(q));
@@ -26,9 +33,9 @@ const Boats = () => {
     if (condition !== "all") list = list.filter((b) => b.condition === condition);
     if (sort === "price-asc") list.sort((a, b) => a.price - b.price);
     if (sort === "price-desc") list.sort((a, b) => b.price - a.price);
-    if (sort === "newest") list.sort((a, b) => b.year - a.year);
+    if (sort === "newest") list.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
     return list;
-  }, [search, type, condition, sort]);
+  }, [allBoats, search, type, condition, sort]);
 
   const reset = () => { setSearch(""); setType("all"); setCondition("all"); setSort("newest"); };
 
@@ -93,16 +100,21 @@ const Boats = () => {
         </div>
       </div>
 
-      <p className="mb-4 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "boat" : "boats"} found</p>
-
-      {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-20 text-center text-muted-foreground">
-          No boats match your filters.
-        </div>
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Loading boats...</p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((b) => <BoatCard key={b.id} boat={b} />)}
-        </div>
+        <>
+          <p className="mb-4 text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "boat" : "boats"} found</p>
+          {filtered.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border py-20 text-center text-muted-foreground">
+              No boats match your filters.
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((b) => <BoatCard key={b.id} boat={b} />)}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
