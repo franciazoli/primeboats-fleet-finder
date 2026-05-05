@@ -13,8 +13,8 @@ export const Footer = () => {
             <Anchor className="h-5 w-5 text-accent" /> PrimeBoats
           </div>
           <p className="mt-3 max-w-md text-sm text-primary-foreground/70">
-            Premium small boats, hand-picked across the Netherlands. We help you find the right
-            vessel for canals, lakes and coastal cruising.
+            Small boats hand-picked for anglers. We help you find the right vessel and fit it out
+            with everything you need — motor, canopy, gear and more.
           </p>
         </div>
 
@@ -23,15 +23,14 @@ export const Footer = () => {
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/70">
             <li><Link to="/boats" className="hover:text-accent">All boats</Link></li>
             <li><Link to="/contact" className="hover:text-accent">Contact</Link></li>
-            <li><Link to="/admin/login" className="hover:text-accent">Dealer login</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-sm font-semibold uppercase tracking-wider">Get in touch</h3>
           <ul className="mt-4 space-y-3 text-sm text-primary-foreground/70">
-            <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Havenstraat 12, Amsterdam</li>
-            <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 text-accent" /> +31 20 123 4567</li>
+            <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Sittard Doctor Noleslaan 145</li>
+            <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 text-accent" /> +36 70 944 7924</li>
             <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 text-accent" /> info@primeboats.nl</li>
           </ul>
         </div>

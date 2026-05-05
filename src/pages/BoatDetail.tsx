@@ -116,7 +116,7 @@ const BoatDetail = () => {
             disabled={boat.status === "sold"}
             className="mt-6 w-full bg-primary hover:bg-primary/90"
           >
-            {boat.status === "sold" ? "Sold" : `Inquire about this ${boat.type.toLowerCase()}`}
+            {boat.status === "sold" ? "Sold" : "Inquire about this boat"}
           </Button>
         </div>
       </div>

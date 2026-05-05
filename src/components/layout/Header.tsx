@@ -39,12 +39,6 @@ export const Header = () => {
               {l.label}
             </NavLink>
           ))}
-          <Link
-            to="/admin/login"
-            className="text-xs font-medium uppercase tracking-wider text-muted-foreground hover:text-primary"
-          >
-            Admin
-          </Link>
         </nav>
 
         <button
@@ -75,13 +69,6 @@ export const Header = () => {
                 {l.label}
               </NavLink>
             ))}
-            <Link
-              to="/admin/login"
-              onClick={() => setOpen(false)}
-              className="rounded-md px-3 py-2 text-sm uppercase tracking-wider text-muted-foreground hover:bg-secondary"
-            >
-              Admin
-            </Link>
           </nav>
         </div>
       )}

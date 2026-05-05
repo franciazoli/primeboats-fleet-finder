@@ -22,14 +22,14 @@ const Index = () => {
         </div>
         <div className="container relative flex min-h-[78vh] flex-col justify-center py-20 text-primary-foreground">
           <p className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3 py-1 text-xs font-medium uppercase tracking-widest backdrop-blur">
-            <Anchor className="h-3.5 w-3.5 text-accent" /> Made for Dutch waters
+            <Anchor className="h-3.5 w-3.5 text-accent" /> Built for anglers
           </p>
           <h1 className="max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Premium small boats, <span className="text-accent">hand-picked</span>.
+            Quality small boats, <span className="text-accent">ready to fish</span>.
           </h1>
           <p className="mt-6 max-w-xl text-base text-primary-foreground/85 md:text-lg">
-            From classic sloops on the Amsterdam canals to sport cruisers on the IJsselmeer —
-            PrimeBoats is your trusted partner for finding the right vessel.
+            From open aluminium boats to sturdy sloops — PrimeBoats helps anglers find the
+            perfect vessel and equip it exactly the way they need.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -66,18 +66,18 @@ const Index = () => {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-accent">Why PrimeBoats</p>
             <h2 className="mt-2 font-display text-3xl font-bold text-primary md:text-4xl">
-              Three decades on the water
+              Everything an angler needs
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Every boat in our inventory is personally inspected by our team. No surprises, no
-              sales tricks — just honest advice and beautifully maintained boats.
+              Every boat in our inventory is personally inspected by our team. We also take care
+              of the full fit-out — so you hit the water ready to fish from day one.
             </p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { icon: Shield, title: "Inspected & verified", text: "Every vessel passes a 60-point inspection before listing." },
-              { icon: Sailboat, title: "Curated inventory", text: "From classic sloops to modern sport cruisers — only the best." },
-              { icon: HeartHandshake, title: "After-sale support", text: "We help with delivery, mooring and onboarding for every buyer." },
+              { icon: Shield, title: "Inspected & verified", text: "Every vessel passes a thorough inspection before listing — no hidden surprises." },
+              { icon: Sailboat, title: "Angler-ready boats", text: "Sloops, aluminium boats and open hulls ideal for fishing on lakes, rivers and canals." },
+              { icon: HeartHandshake, title: "Full custom fit-out", text: "We equip your boat with whatever you need — motor, canopy, rod holders, livewells and more." },
             ].map(({ icon: Icon, title, text }) => (
               <div key={title} className="rounded-lg border border-border bg-card p-6 shadow-card">
                 <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -96,9 +96,10 @@ const Index = () => {
         <div className="overflow-hidden rounded-2xl bg-gradient-primary p-10 text-primary-foreground shadow-elegant md:p-16">
           <div className="grid gap-6 md:grid-cols-[2fr_1fr] md:items-center">
             <div>
-              <h2 className="font-display text-3xl font-bold md:text-4xl">Looking for something specific?</h2>
+              <h2 className="font-display text-3xl font-bold md:text-4xl">Want a boat built your way?</h2>
               <p className="mt-3 max-w-xl text-primary-foreground/85">
-                Tell us what you're after — we have access to boats not yet listed and source vessels on request.
+                Tell us your ideal setup — we source the boat and fit it out with the engine, canopy,
+                electronics or gear you need. Ready to fish, right out of the gate.
               </p>
             </div>
             <div className="md:text-right">

@@ -7,8 +7,15 @@ RewriteEngine On
     Deny from all
 </FilesMatch>
 
+# Already rewritten to dist/ – stop, serve as-is
+RewriteRule ^dist/ - [L]
+
 # PHP API – pass through, no rewrite
 RewriteRule ^api/ - [L]
+
+# Real files (e.g. assets/uploads/) – serve directly
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
 
 # If the exact file exists inside dist/ – serve it (JS, CSS, images, etc.)
 RewriteCond %{DOCUMENT_ROOT}/dist/$1 -f

@@ -44,7 +44,7 @@ const Boats = () => {
       <div className="mb-8 max-w-2xl">
         <p className="text-sm font-semibold uppercase tracking-widest text-accent">Inventory</p>
         <h1 className="mt-2 font-display text-4xl font-bold text-primary md:text-5xl">All boats</h1>
-        <p className="mt-3 text-muted-foreground">Browse our curated selection of small boats, available across the Netherlands.</p>
+        <p className="mt-3 text-muted-foreground">Boats hand-picked for anglers — each one can be equipped with a motor, canopy, or any gear you need.</p>
       </div>
 
       <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-center">

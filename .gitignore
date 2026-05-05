@@ -12,6 +12,7 @@ dist-ssr
 *.local
 
 .env
+includes/db.php
 
 # Editor directories and files
 .vscode/*
